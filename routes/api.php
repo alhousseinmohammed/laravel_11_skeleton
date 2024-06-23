@@ -3,8 +3,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JwtAuthController;
 use App\Http\Controllers\Store\BookController;
+use App\Http\Controllers\User\RegisterUserController;
 use Illuminate\Support\Facades\Route;
 
+Route::name('auth.')->controller(RegisterUserController::class)->group(
+    function () {
+        Route::post('/register', 'store')->name('register');
+    }
+);
 
 Route::prefix('/auth')->name('auth.')->controller(AuthController::class)->group(
     function () {
