@@ -17,7 +17,7 @@ Route::middleware('auth:api')->prefix('/')->group(
     function () {
         Route::prefix('/book')->name('books.')->controller(BookController::class)->group(
             function () {
-                Route::get('/', 'index')->name('index')->middleware(['can:book.view']);
+                Route::get('/', 'index')->name('index')->middleware(['can:book.view', 'check.access']);
                 Route::post('/', 'create')->name('create')->middleware(['can:book.create']);
                 Route::get('/{book}', 'show')->name('show')->middleware(['can:book.view']);
                 Route::put('/{book}', 'update')->name('update')->middleware(['can:book.edit']);
