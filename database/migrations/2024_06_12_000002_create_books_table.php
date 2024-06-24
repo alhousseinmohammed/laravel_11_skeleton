@@ -21,6 +21,7 @@ return new class extends Migration
                 $table->string('barcode', 64)->nullable();
                 $table->integer('pages_number');
                 $table->boolean('published')->default(false);
+                $table->string('book_cover_img')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
             }

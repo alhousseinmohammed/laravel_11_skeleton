@@ -2,7 +2,7 @@
 
 namespace App\Repository\Store;
 
-use App\Models\AbstractModel;
+
 use App\Repository\AbstractRepository;
 use App\Pay\PendingReviewRecords\PendingReviewRecord;
 use Illuminate\Support\Arr;
@@ -26,6 +26,7 @@ class BookRepository extends AbstractRepository
                 'barcode' => ['nullable', 'string', 'max:64'],
                 'pages_number' => [Rule::requiredIf(!$book->exists), 'numeric'],
                 'published' => ['sometimes', 'boolean'],
+                'book_cover_img' => ['sometimes', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
             ]
         )->validate();
 
@@ -39,6 +40,9 @@ class BookRepository extends AbstractRepository
      */
     protected function store($book, $data)
     {
+        if (request()->hasFile('book_cover_img')) {
+            $data['book_cover_img'] = request()->file('book_cover_img')->store('book_images', 'public');
+    }
         $book->fill(Arr::except($data, []))->save();
 
         return $book;

@@ -40,6 +40,10 @@ prepare-server:
 	chmod +x ./scripts/preare_server_for_laravel.sh
 	sudo ./scripts/preare_server_for_laravel.sh
 
+# You have to use supervisorctl or systemctl
+laravel-worker:
+	php artisan queue:work redis --sleep=3 --tries=3
+
 # Run all checks and tests
 check: lint test
 

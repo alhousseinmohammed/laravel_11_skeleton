@@ -20,6 +20,7 @@ class Book extends AbstractModel
         'barcode',
         'pages_number',
         'published',
+        'book_cover_img'
     ];
 
     protected $table = 'books';

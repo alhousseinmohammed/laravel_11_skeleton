@@ -67,11 +67,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        //$this->authorizedFor('books.create');
-
         return BookResource::make(
             (new BookRepository())
-                ->create(new Book(), request()->merge([])->all())
+                ->create(new Book(), request()->all())
                 ->load([])
         );
     }

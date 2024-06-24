@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Requests\RegisterUserRequest;
+use App\Jobs\UserCreatedJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,7 @@ class RegisterUserController extends Controller
             ]
         );
 
+        UserCreatedJob::dispatch($user);
         //$user->sendEmailVerificationNotification();
 
         return response()->json(['message' => 'register_successfully'], 201);

@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -177,6 +179,9 @@ class BookControllerTest extends TestCase
     #[Test]
     public function itCreatesNewBook()
     {
+
+        Storage::fake('public');
+
         Book::factory()->create();
         $user = user::factory()->create();
 
@@ -184,12 +189,13 @@ class BookControllerTest extends TestCase
 
         $response = $this->postJson(
             route('books.create'), [
-            'name' => 'my_book_name',
-            'store_id' => $store->id,
-            'user_id' => $user->id,
-            'barcode' => "123",
-            'pages_number' => "12",
-            'published' => true,
+                'name' => 'my_book_name',
+                'store_id' => $store->id,
+                'user_id' => $user->id,
+                'barcode' => "123",
+                'pages_number' => "12",
+                'published' => true,
+                'book_cover_img' => UploadedFile::fake()->image('book_cover.jpg')
             ]
         );
 
@@ -203,6 +209,37 @@ class BookControllerTest extends TestCase
         $this->assertEquals($user->id, $showResponse->json('data')['user']['id']);
         $this->assertEquals($store->id, $showResponse->json('data')['store']['id']);
         $this->assertEquals('my_book_name', $showResponse->json('data')['name']);
+        $this->assertStringContainsString('.jpg', $showResponse->json('data')['book_cover_img']);
+
+        Storage::disk('public')->assertExists($showResponse->json('data')['book_cover_img']);
+    }
+
+    #[Test]
+    public function itUploadBookImage()
+    {
+
+        Storage::fake('public');
+
+        $user = user::factory()->create();
+        $store = Store::factory()->create();
+
+        $response = $this->postJson(
+            route('books.create'), [
+                'name' => 'my_book_name',
+                'store_id' => $store->id,
+                'user_id' => $user->id,
+                'barcode' => "123",
+                'pages_number' => "12",
+                'published' => true,
+                'book_cover_img' => UploadedFile::fake()->image('book_cover.jpg')
+            ]
+        );
+
+        $response->assertSuccessful();
+
+        $book = Book::first();
+        $this->assertNotNull($book->book_cover_img);
+        Storage::disk('public')->assertExists( $book->book_cover_img);
     }
 
     #[Test]
