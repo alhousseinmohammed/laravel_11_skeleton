@@ -20,11 +20,7 @@ class JwtAuthController extends Controller
             return response()->json(['token' => JWTAuth::fromUser($user)]);
         }
         if (!$token = JWTAuth::attempt($credentials)) {
-            throw ValidationException::withMessages(
-                [
-                'email' => ['The provided credentials are incorrect.'],
-                ]
-            );
+            return response()->json(['message' => 'incorrect_access_data'], 401);
         }
 
         return response()->json(['token' => $token]);

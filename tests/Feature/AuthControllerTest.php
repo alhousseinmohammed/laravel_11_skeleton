@@ -97,12 +97,9 @@ class AuthControllerTest extends TestCase
             )
         );
 
-        $response->assertStatus(422);
-        $response->assertInvalid(
-            [
-            'email' => 'The provided credentials are incorrect.',
-            ]
-        );
+        $response->assertStatus(401);
+
+        $this->assertEquals('incorrect_access_data', $response->json('message'));
 
     }
 

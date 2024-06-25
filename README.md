@@ -106,20 +106,22 @@ To run the database migrations, execute:
 
 bash
 
-    ```bash
-    php artisan migrate
+    make migrate
 
 ### Seeding
 To seed the database with sample data, execute:
 
-    ```bash
-    php artisan db:seed
+    make seed
 
 ## Running Tests
 To run the tests, execute:
 
-    ```bash
-    php artisan test
+    make test
+
+## swagger generate and update
+To run the tests, execute:
+
+    make swagger-generate
 
 ## Contributing
 Thank you for considering contributing to this project! Please fork the repository and create a pull request with your changes.

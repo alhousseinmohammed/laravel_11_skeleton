@@ -66,14 +66,8 @@ class JwtAuthControllerTest extends TestCase
             )
         );
 
-        $response->assertStatus(422);
+        $response->assertStatus(401);
 
-        $response->assertInvalid(
-            [
-            'email' => 'The provided credentials are incorrect.',
-            ]
-        );
-
+        $this->assertEquals('incorrect_access_data', $response->json('message'));
     }
-
 }

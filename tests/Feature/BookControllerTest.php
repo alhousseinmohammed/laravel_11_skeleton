@@ -52,17 +52,17 @@ class BookControllerTest extends TestCase
             'user_id' => $secondUser->id,
             'name' => 'My first book name',
             'barcode' => "some-barcode",
-            'pages_number' => 500,
+            'pages_number' => 400,
             'published' => true,
             ]
         );
 
-        $books = Book::factory()->count(2)->create(
+        $books = Book::factory()->count(1)->create(
             [
             'store_id' => $store->id,
             'user_id' => $user->id,
             'name' => 'Other My book name',
-            'barcode' => "some-barcode",
+            'barcode' => "second-barcode",
             'pages_number' => 500,
             'published' => false,
             ]

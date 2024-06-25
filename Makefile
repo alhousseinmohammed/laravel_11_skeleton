@@ -21,6 +21,9 @@ seed:
 dangerous-regenerate-db:
 	php artisan migrate:fresh --seed
 
+migrate:
+	php artisan migrate
+
 update:
 	composer update
 
@@ -44,6 +47,8 @@ prepare-server:
 laravel-worker:
 	php artisan queue:work redis --sleep=3 --tries=3
 
+swagger-generate:
+	php artisan  l5-swagger:generate
 # Run all checks and tests
 check: lint test
 

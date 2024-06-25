@@ -32,6 +32,37 @@ class AuthController extends Controller
         return redirect('/login')->withInput()->with('login_failed', 1);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/auth/get-token",
+     *     summary="Get a token for API access",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password","device_name"},
+     *             @OA\Property(property="email", type="string", format="email"),
+     *             @OA\Property(property="password", type="string", format="password"),
+     *             @OA\Property(property="device_name", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token successfully generated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="token", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized access",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="incorrect_access_data")
+     *         )
+     *     )
+     * )
+     */
     public function getToken(Request $request)
     {
         $request->validate(
@@ -45,11 +76,7 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages(
-                [
-                'email' => ['The provided credentials are incorrect.'],
-                ]
-            );
+            return response()->json(['message' => 'incorrect_access_data'], 401);
         }
 
         return $user->createToken($request->device_name)->plainTextToken;
@@ -59,6 +86,6 @@ class AuthController extends Controller
     {
         Auth::guard('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'successfully_logged_out']);
     }
 }
