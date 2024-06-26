@@ -49,6 +49,22 @@ laravel-worker:
 
 swagger-generate:
 	php artisan  l5-swagger:generate
+
+docker-build:
+	 docker-compose  -f docker/docker-compose.yml  up  --build
+
+docker-enter:
+	docker-compose  -f docker/docker-compose.yml  exec app bash
+
+docker-migrate:
+	docker-compose  -f docker/docker-compose.yml  exec app make migrate
+
+docker-seed:
+	docker-compose  -f docker/docker-compose.yml exec app make seed
+
+docker-fresh-database:
+	docker-compose  -f docker/docker-compose.yml  exec app make dangerous-regenerate-db
+
 # Run all checks and tests
 check: lint test
 

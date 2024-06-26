@@ -23,6 +23,6 @@ class ConfigerSwaggerController extends SwaggerController
             'config' => config('l5-swagger.defaults')
         ]);
 
-        return Parent::api($request);
+        return parent::api($request);
     }
 }

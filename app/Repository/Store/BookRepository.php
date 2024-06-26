@@ -2,7 +2,6 @@
 
 namespace App\Repository\Store;
 
-
 use App\Repository\AbstractRepository;
 use App\Pay\PendingReviewRecords\PendingReviewRecord;
 use Illuminate\Support\Arr;
@@ -42,7 +41,7 @@ class BookRepository extends AbstractRepository
     {
         if (request()->hasFile('book_cover_img')) {
             $data['book_cover_img'] = request()->file('book_cover_img')->store('book_images', 'public');
-    }
+        }
         $book->fill(Arr::except($data, []))->save();
 
         return $book;

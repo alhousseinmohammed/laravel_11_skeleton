@@ -50,7 +50,14 @@ This is a sample Laravel 11 project. It provides a robust framework for web appl
 2. Build and run the containers:
 
    ```bash
-   docker-compose up -d
+   make docker-build
+   
+also check
+
+    make docker-migrate
+    make docker-seed
+    make docker-fresh-database
+    make docker-enter
 
 The application will be accessible at `http://localhost`.
 
