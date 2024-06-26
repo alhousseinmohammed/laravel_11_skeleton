@@ -5,10 +5,10 @@ use App\Http\Controllers\JwtAuthController;
 use App\Http\Controllers\Store\BookController;
 use App\Http\Controllers\User\RegisterUserController;
 use Illuminate\Support\Facades\Route;
-use L5Swagger\Http\Controllers\SwaggerController;
+use App\Http\Controllers\Swagger\ConfigerSwaggerController;
 
 if (app()->environment('local')) {
-    Route::get('documentation', [SwaggerController::class, 'api']);
+    Route::get('documentation', [ConfigerSwaggerController::class, 'api']);
 }
 
 Route::name('auth.')->controller(RegisterUserController::class)->group(

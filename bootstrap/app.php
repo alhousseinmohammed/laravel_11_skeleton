@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckAccess;
+use App\Http\Middleware\JsonResponse;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'check.access' => CheckAccess::class
         ]);
+        $middleware->api([JsonResponse::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -130,7 +130,10 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "sanctum": []
+                    },
+                    {
+                        "customAuth": []
                     }
                 ]
             },
@@ -141,7 +144,54 @@
                 "summary": "Create a new book",
                 "operationId": "835a665b8edc7aee7c926ac573807608",
                 "requestBody": {
-                    "required": true
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "pages_number"
+                                ],
+                                "properties": {
+                                    "store_id": {
+                                        "description": "Must exist in stores table",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "user_id": {
+                                        "description": "Must exist in users table",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "name": {
+                                        "description": "Required if book does not exist",
+                                        "type": "string",
+                                        "maxLength": 64
+                                    },
+                                    "barcode": {
+                                        "type": "string",
+                                        "maxLength": 64,
+                                        "nullable": true
+                                    },
+                                    "pages_number": {
+                                        "description": "Required if book does not exist",
+                                        "type": "integer"
+                                    },
+                                    "published": {
+                                        "type": "boolean",
+                                        "nullable": true
+                                    },
+                                    "book_cover_img": {
+                                        "description": "Image file in jpeg, jpg, or png format",
+                                        "type": "string",
+                                        "format": "binary",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
                 },
                 "responses": {
                     "201": {
@@ -153,7 +203,10 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "sanctum": []
+                    },
+                    {
+                        "customAuth": []
                     }
                 ]
             }
@@ -172,7 +225,7 @@
                         "description": "ID of the book",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
@@ -186,7 +239,10 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "sanctum": []
+                    },
+                    {
+                        "customAuth": []
                     }
                 ]
             },
@@ -203,12 +259,59 @@
                         "description": "ID of the book",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
                 "requestBody": {
-                    "required": true
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "pages_number"
+                                ],
+                                "properties": {
+                                    "store_id": {
+                                        "description": "Must exist in stores table",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "user_id": {
+                                        "description": "Must exist in users table",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "name": {
+                                        "description": "Required if book does not exist",
+                                        "type": "string",
+                                        "maxLength": 64
+                                    },
+                                    "barcode": {
+                                        "type": "string",
+                                        "maxLength": 64,
+                                        "nullable": true
+                                    },
+                                    "pages_number": {
+                                        "description": "Required if book does not exist",
+                                        "type": "integer"
+                                    },
+                                    "published": {
+                                        "type": "boolean",
+                                        "nullable": true
+                                    },
+                                    "book_cover_img": {
+                                        "description": "Image file in jpeg, jpg, or png format",
+                                        "type": "string",
+                                        "format": "binary",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
                 },
                 "responses": {
                     "200": {
@@ -223,7 +326,10 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "sanctum": []
+                    },
+                    {
+                        "customAuth": []
                     }
                 ]
             },
@@ -240,7 +346,7 @@
                         "description": "ID of the book",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
@@ -254,7 +360,10 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "sanctum": []
+                    },
+                    {
+                        "customAuth": []
                     }
                 ]
             }
@@ -262,10 +371,19 @@
     },
     "components": {
         "securitySchemes": {
-            "sanctumAuth": {
+            "customAuth": {
+                "type": "apiKey",
+                "description": "Enter token in format  Bearer xx|xxxxxxxx",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "Bearer"
+            },
+            "sanctum": {
                 "type": "http",
-                "bearerFormat": "JWT",
-                "scheme": "bearer"
+                "description": "Enter token in format without word Bearer",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "Bearer"
             }
         }
     }

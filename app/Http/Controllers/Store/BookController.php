@@ -18,10 +18,13 @@ use Spatie\QueryBuilder\QueryBuilder;
  *     ),
  *      @OA\Components(
  *          @OA\SecurityScheme(
- *              securityScheme="sanctumAuth",
- *              type="http",
+ *              securityScheme="customAuth",
+ *              type="apiKey",
  *              scheme="bearer",
- *              bearerFormat="JWT"
+ *              description="Enter token in format  Bearer xx|xxxxxxxx",
+ *              name="Authorization",
+ *              in="header",
+ *              scheme="Bearer"
  *          )
  *      )
  * )
@@ -34,7 +37,7 @@ class BookController extends Controller
      *     path="/api/book",
      *     summary=" Get list of books",
      *     tags={"Books"},
-     *     security={{"sanctumAuth":{}}},
+     *     security={{"sanctum":{}},{"customAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="query",
@@ -101,13 +104,13 @@ class BookController extends Controller
      *     path="/api/book/{book}",
      *     summary="Get a book by ID",
      *     tags={"Books"},
-     *     security={{"sanctumAuth":{}}},
+     *     security={{"sanctum":{}},{"customAuth":{}}},
      *     @OA\Parameter(
      *         name="book",
      *         in="path",
      *         description="ID of the book",
      *         required=true,
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -136,10 +139,23 @@ class BookController extends Controller
      *     path="/api/book",
      *     summary="Create a new book",
      *     tags={"Books"},
-     *     security={{"sanctumAuth":{}}},
+     *     security={{"sanctum":{}},{"customAuth":{}}},
      *     @OA\RequestBody(
-     *         required=true
-     *     ),
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  required={"name", "pages_number"},
+     *                  @OA\Property(property="store_id", type="integer", nullable=true, description="Must exist in stores table"),
+     *                  @OA\Property(property="user_id", type="integer", nullable=true, description="Must exist in users table"),
+     *                  @OA\Property(property="name", type="string", maxLength=64, description="Required if book does not exist"),
+     *                  @OA\Property(property="barcode", type="string", nullable=true, maxLength=64),
+     *                  @OA\Property(property="pages_number", type="integer", description="Required if book does not exist"),
+     *                  @OA\Property(property="published", type="boolean", nullable=true),
+     *                  @OA\Property(property="book_cover_img", type="string", format="binary", nullable=true, description="Image file in jpeg, jpg, or png format")
+     *              )
+     *          )
+     *      ),
      *     @OA\Response(
      *         response=201,
      *         description="Book created",
@@ -164,18 +180,30 @@ class BookController extends Controller
      *     path="/api/book/{book}",
      *     summary="Update a book",
      *     tags={"Books"},
-     *     security={{"sanctumAuth":{}}},
+     *     security={{"sanctum":{}},{"customAuth":{}}},
      *     @OA\Parameter(
      *         name="book",
      *         in="path",
      *         description="ID of the book",
      *         required=true,
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="string")
      *     ),
      *     @OA\RequestBody(
-     *         required=true,
-
-     *     ),
+     *           required=true,
+     *           @OA\MediaType(
+     *               mediaType="multipart/form-data",
+     *               @OA\Schema(
+     *                   required={"name", "pages_number"},
+     *                   @OA\Property(property="store_id", type="integer", nullable=true, description="Must exist in stores table"),
+     *                   @OA\Property(property="user_id", type="integer", nullable=true, description="Must exist in users table"),
+     *                   @OA\Property(property="name", type="string", maxLength=64, description="Required if book does not exist"),
+     *                   @OA\Property(property="barcode", type="string", nullable=true, maxLength=64),
+     *                   @OA\Property(property="pages_number", type="integer", description="Required if book does not exist"),
+     *                   @OA\Property(property="published", type="boolean", nullable=true),
+     *                   @OA\Property(property="book_cover_img", type="string", format="binary", nullable=true, description="Image file in jpeg, jpg, or png format")
+     *               )
+     *           )
+     *       ),
      *     @OA\Response(
      *         response=200,
      *         description="Book updated"
@@ -204,13 +232,13 @@ class BookController extends Controller
      *     path="/api/book/{book}",
      *     summary="Delete a book",
      *     tags={"Books"},
-     *     security={{"sanctumAuth":{}}},
+     *     security={{"sanctum":{}},{"customAuth":{}}},
      *     @OA\Parameter(
      *         name="book",
      *         in="path",
      *         description="ID of the book",
      *         required=true,
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(
      *         response=200,
